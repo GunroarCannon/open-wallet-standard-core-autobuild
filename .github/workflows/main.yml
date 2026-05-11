@@ -1,0 +1,22 @@
+name: Build Windows Binary
+on: workflow_dispatch # This lets you run it manually with a button
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: |
+          npm install
+          npm run build
+      - name: Upload Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binary
+          path: build/Release/*.node
